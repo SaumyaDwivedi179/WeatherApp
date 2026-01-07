@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "api": "json-server --watch db.json --port 3001",
+    "start": "concurrently \"npm run api\" \"npm run dev\""
+  }
+}
