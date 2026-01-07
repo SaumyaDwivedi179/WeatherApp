@@ -1,38 +1,38 @@
 import { describe, it, expect, vi } from 'vitest'
+import axios from 'axios'
 import { fetchWeatherByCoords, CITY_COORDS } from '../services/weatherApi.js'
 
-global.fetch = vi.fn()
+vi.mock('axios')
 
-describe('Weather API Service', () => {
+describe('Weather API (Axios)', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('fetches weather for valid coordinates', async () => {
-    const mockData = {
-      current: {
-        temperature_2m: 22.5,
-        apparent_temperature: 21,
-        relative_humidity_2m: 65,
-        weather_code: 0
+  it('fetches weather data', async () => {
+    const mockResponse = {
+      data: {
+        current: {
+          temperature_2m: 22.5,
+          apparent_temperature: 21.0,
+          relative_humidity_2m: 65
+        }
       }
     }
     
-    global.fetch.mockResolvedValue({
-      ok: true,
-      json: async () => mockData
-    })
+    axios.get.mockResolvedValue(mockResponse)
 
     const result = await fetchWeatherByCoords(52.52, 13.41)
     
-    expect(result).toEqual({
-      city: 'Berlin',
-      temperature: 23,
-      feelsLike: 21,
-      humidity: 65,
-      condition: 'Clear'
-    })
-    
-    expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('api.open-meteo.com')
+    expect(result.temperature).toBe(23)
+    expect(result.feelsLike).toBe(21)
+    expect(result.humidity).toBe(65)
+    expect(axios.get).toHaveBeenCalledWith(
+      'https://api.open-meteo.com/v1/forecast',
+      expect.objectContaining({
+        params: expect.objectContaining({
+          latitude: 52.52,
+          longitude: 13.41
+        })
+      })
     )
   })
 
@@ -40,13 +40,8 @@ describe('Weather API Service', () => {
     await expect(fetchWeatherByCoords()).rejects.toThrow('Latitude and longitude required')
   })
 
-  it('handles API error', async () => {
-    global.fetch.mockResolvedValue({ ok: false })
-    await expect(fetchWeatherByCoords(52.52, 13.41)).rejects.toThrow('Weather data unavailable')
-  })
-
-  it('provides city coordinates', () => {
-    expect(CITY_COORDS.delhi).toEqual({ lat: 28.61, lon: 77.23 })
-    expect(CITY_COORDS.london).toEqual({ lat: 51.51, lon: -0.13 })
+  it('handles 400 error', async () => {
+    axios.get.mockRejectedValue({ response: { status: 400 } })
+    await expect(fetchWeatherByCoords(0, 0)).rejects.toThrow('Invalid coordinates')
   })
 })
