@@ -114,5 +114,41 @@ body {
   color: var(--theme-text-secondary);
 }
 
+/* Header - Used by Header component */
+.header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: none;
+  border-radius: 24px 24px 0 0;
+  padding: 32px 24px;
+  margin-bottom: 0;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+}
+
+.header-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.header-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #60a5fa 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.header-subtitle {
+  opacity: 0.8;
+  font-size: clamp(1rem, 3vw, 1.125rem);
+  text-align: center;
+  line-height: 1.5;
+  color: var(--theme-text-secondary);
+}
+
 
 
