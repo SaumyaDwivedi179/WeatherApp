@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import axios from 'axios'
-import { fetchWeatherByCoords, CITY_COORDS } from '../services/weatherApi.js'
+import { fetchWeatherInfoByCoordinates, CITY_COORDS } from '../services/weatherApi.js'
 
 vi.mock('axios')
 
@@ -20,7 +20,7 @@ describe('Weather API (Axios)', () => {
     
     axios.get.mockResolvedValue(mockResponse)
 
-    const result = await fetchWeatherByCoords(52.52, 13.41)
+    const result = await fetchWeatherInfoByCoordinates(52.52, 13.41)
     
     expect(result.temperature).toBe(23)
     expect(result.feelsLike).toBe(21)
@@ -37,11 +37,11 @@ describe('Weather API (Axios)', () => {
   })
 
   it('rejects invalid coordinates', async () => {
-    await expect(fetchWeatherByCoords()).rejects.toThrow('Latitude and longitude required')
+    await expect(fetchWeatherInfoByCoordinates()).rejects.toThrow('Latitude and longitude required')
   })
 
   it('handles 400 error', async () => {
     axios.get.mockRejectedValue({ response: { status: 400 } })
-    await expect(fetchWeatherByCoords(0, 0)).rejects.toThrow('Invalid coordinates')
+    await expect(fetchWeatherInfoByCoordinates(0, 0)).rejects.toThrow('Invalid coordinates')
   })
 })
