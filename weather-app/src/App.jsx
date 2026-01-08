@@ -2,100 +2,82 @@ import { useState } from 'react';
 import Header from './components/Header.jsx';
 import SearchForm from './components/SearchForm.jsx';
 import WeatherCard from './components/WeatherCard.jsx';
+import { ThemeProvider, useTheme } from './context/ThemeContext.jsx';
+import ThemeToggleButton from './components/AppContext.jsx';
 import { fetchWeatherByCoords, CITY_COORDS } from './services/weatherApi';
 
-function App() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+function WeatherAppContent() {
+  const [weatherData, setWeatherData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const { theme } = useTheme();
 
-  const handleSearch = async (city) => {
-    const cityName = city.toLowerCase().trim();
-    const coords = CITY_COORDS[cityName];
+  const handleCitySearch = async (cityName) => {
+    const normalizedCityName = cityName.toLowerCase().trim();
+    const cityCoordinates = CITY_COORDS[normalizedCityName];
 
-    
-    if (!coords) {
-      setError(`City "${city}" not found in our list. Try London, Delhi, or Tokyo.`);
-      setWeather(null);
+    if (!cityCoordinates) {
+      setErrorMessage(`City "${cityName}" not found in our list. Try London, Delhi, or Tokyo.`);
+      setWeatherData(null);
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    setIsLoading(true);
+    setErrorMessage(null);
 
     try {
-     
-      const data = await fetchWeatherByCoords(coords.lat, coords.lon);
-      
-      
-      setWeather({
-        ...data,
-        city: city.charAt(0).toUpperCase() + city.slice(1)
+      const weatherResponse = await fetchWeatherByCoords(
+        cityCoordinates.lat, 
+        cityCoordinates.lon
+      );
+      const formattedCityName = cityName.charAt(0).toUpperCase() + cityName.slice(1);
+      setWeatherData({
+        ...weatherResponse,
+        city: formattedCityName,
       });
-    } catch (err) {
-      setError(err.message || "Failed to fetch weather data.");
-      setWeather(null);
+    } catch (error) {
+      setErrorMessage(error.message || "Failed to fetch weather data.");
+      setWeatherData(null);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
-      color: '#ffffff',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: '20px',
-      fontFamily: 'sans-serif'
-    }}>
-      <div style={{ width: '100%', maxWidth: '500px' }}>
-        {/* Header Component */}
+    <div className="app-container" data-theme={theme}>
+      <div className="app-wrapper">
         <Header />
-        
-        {/* Main Interaction Area */}
-        <main style={{
-          background: 'rgba(255, 255, 255, 0.05)',
-          padding: '24px',
-          borderRadius: '0 0 24px 24px',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 25px 45px rgba(0,0,0,0.2)'
-        }}>
-          <SearchForm onSearch={handleSearch} />
+        <ThemeToggleButton />
 
-          {/* Status Indicators */}
-          {loading && (
-            <p style={{ textAlign: 'center', opacity: 0.7 }}>Searching the skies...</p>
+        <main className="main-content">
+          <SearchForm onSearch={handleCitySearch} />
+
+          {isLoading && (
+            <p className="loading-text">Searching the skies...</p>
           )}
-          
-          {error && (
-            <div style={{
-              padding: '12px',
-              backgroundColor: 'rgba(239, 68, 68, 0.2)',
-              border: '1px solid #ef4444',
-              borderRadius: '8px',
-              color: '#fca5a5',
-              textAlign: 'center',
-              marginTop: '10px'
-            }}>
-              {error}
+
+          {errorMessage && (
+            <div className="error-message">
+              {errorMessage}
             </div>
           )}
-          
-          {/* Display weather results */}
-          {weather && !loading && (
-            <WeatherCard data={weather} />
-          )}
+
+          {weatherData && !isLoading && <WeatherCard data={weatherData} />}
         </main>
 
-        <footer style={{ marginTop: '20px', textAlign: 'center', opacity: 0.5, fontSize: '0.8rem' }}>
+        <footer className="footer">
           Powered by Open-Meteo API
         </footer>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <WeatherAppContent />
+    </ThemeProvider>
   );
 }
 

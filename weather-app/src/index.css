@@ -1,11 +1,123 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Theme Variables - Used by ThemeContext.jsx (THEME_LIGHT, THEME_DARK) */
+:root,
+[data-theme="light"] {
+  /* Light Theme - Background Colors (used by WeatherAppContent in App.jsx) */
+  --theme-background-primary: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
+  --theme-background-secondary: rgba(255, 255, 255, 0.8);
+  
+  /* Light Theme - Text Colors (used by weatherData, errorMessage in App.jsx) */
+  --theme-text-primary: #0f172a;
+  --theme-text-secondary: #475569;
+  
+  /* Light Theme - Border & Shadow (used by main-content in App.jsx) */
+  --theme-border-color: rgba(15, 23, 42, 0.1);
+  --theme-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+  
+  /* Light Theme - Button Colors (used by ThemeToggleButton in AppContext.jsx) */
+  --theme-button-background: #0f172a;
+  --theme-button-text: #ffffff;
+  
+  /* Light Theme - Error Colors (used by errorMessage in App.jsx) */
+  --theme-error-background: rgba(239, 68, 68, 0.1);
+  --theme-error-border: #ef4444;
+  --theme-error-text: #dc2626;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme - Background Colors (used by WeatherAppContent in App.jsx) */
+  --theme-background-primary: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  --theme-background-secondary: rgba(255, 255, 255, 0.05);
+  
+  /* Dark Theme - Text Colors (used by weatherData, errorMessage in App.jsx) */
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #cbd5e1;
+  
+  /* Dark Theme - Border & Shadow (used by main-content in App.jsx) */
+  --theme-border-color: rgba(255, 255, 255, 0.1);
+  --theme-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+  
+  /* Dark Theme - Button Colors (used by ThemeToggleButton in AppContext.jsx) */
+  --theme-button-background: rgba(255, 255, 255, 0.1);
+  --theme-button-text: #ffffff;
+  
+  /* Dark Theme - Error Colors (used by errorMessage in App.jsx) */
+  --theme-error-background: rgba(239, 68, 68, 0.2);
+  --theme-error-border: #ef4444;
+  --theme-error-text: #fca5a5;
+}
+
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #0f172a;
+  background: var(--theme-background-primary);
+  color: var(--theme-text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
 }
 
-* {
-  box-sizing: border-box;
+/* App Container - Used by WeatherAppContent in App.jsx */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+/* App Wrapper - Used by WeatherAppContent in App.jsx */
+.app-wrapper {
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+}
+
+/* Main Content - Used by WeatherAppContent in App.jsx (contains SearchForm, weatherData, isLoading, errorMessage) */
+.main-content {
+  background: var(--theme-background-secondary);
+  padding: 24px;
+  border-radius: 0 0 24px 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--theme-border-color);
+  box-shadow: var(--theme-shadow);
+  margin-top: 80px;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Loading Text - Used when isLoading is true in App.jsx */
+.loading-text {
+  text-align: center;
+  opacity: 0.7;
+  color: var(--theme-text-secondary);
+}
+
+/* Error Message - Used when errorMessage exists in App.jsx */
+.error-message {
+  padding: 12px;
+  background-color: var(--theme-error-background);
+  border: 1px solid var(--theme-error-border);
+  border-radius: 8px;
+  color: var(--theme-error-text);
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Footer - Used by WeatherAppContent in App.jsx */
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  opacity: 0.5;
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary);
+}
+
+/* Theme Toggle Button - Used by ThemeToggleButton component in AppContext.jsx */
+.theme-toggle-button {
+  /* Button styles are defined inline in AppContext.jsx using BUTTON_POSITION_TOP, BUTTON_POSITION_RIGHT */
+  /* This class can be used for additional styling if needed */
 }
