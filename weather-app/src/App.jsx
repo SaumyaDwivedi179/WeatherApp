@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import Header from './components/Header.jsx';
-import SearchForm from './components/SearchForm.jsx';
+import { SearchForm } from './components/SearchForm.jsx';
 import WeatherCard from './components/WeatherCard.jsx';
 import { ThemeProvider, useTheme } from './context/ThemeContext.jsx';
 import AppContext from './components/AppContext.jsx';
-import { fetchWeatherByCoords, CITY_COORDS } from './services/weatherApi';
+import { fetchWeatherInfoByCoordinates, CITY_COORDS } from './services/weatherApi';
 
 function AppContent() {
-  const [weather, setWeather] = useState(null);
+  const [weatherReports, setWeatherReports] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { theme } = useTheme();
@@ -18,7 +18,7 @@ function AppContent() {
 
     if (!coords) {
       setError(`City "${city}" not found in our list. Try London, Delhi, or Tokyo.`);
-      setWeather(null);
+      setWeatherReports(null);
       return;
     }
 
@@ -26,14 +26,14 @@ function AppContent() {
     setError(null);
 
     try {
-      const data = await fetchWeatherByCoords(coords.lat, coords.lon);
-      setWeather({
+      const data = await fetchWeatherInfoByCoordinates(coords.lat, coords.lon);
+      setWeatherReports({
         ...data,
         city: city.charAt(0).toUpperCase() + city.slice(1),
       });
     } catch (err) {
       setError(err.message || "Failed to fetch weather data.");
-      setWeather(null);
+      setWeatherReports(null);
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ function AppContent() {
             </div>
           )}
 
-          {weather && !loading && <WeatherCard data={weather} />}
+          {weatherReports && !loading && <WeatherCard data={weatherReports} />}
         </main>
 
         <footer className="footer">
