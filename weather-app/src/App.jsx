@@ -3,43 +3,39 @@ import Header from './components/Header.jsx';
 import SearchForm from './components/SearchForm.jsx';
 import WeatherCard from './components/WeatherCard.jsx';
 import { ThemeProvider, useTheme } from './context/ThemeContext.jsx';
-import ThemeToggleButton from './components/AppContext.jsx';
+import AppContext from './components/AppContext.jsx';
 import { fetchWeatherByCoords, CITY_COORDS } from './services/weatherApi';
 
-function WeatherAppContent() {
-  const [weatherData, setWeatherData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+function AppContent() {
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { theme } = useTheme();
 
-  const handleCitySearch = async (cityName) => {
-    const normalizedCityName = cityName.toLowerCase().trim();
-    const cityCoordinates = CITY_COORDS[normalizedCityName];
+  const handleSearch = async (city) => {
+    const cityName = city.toLowerCase().trim();
+    const coords = CITY_COORDS[cityName];
 
-    if (!cityCoordinates) {
-      setErrorMessage(`City "${cityName}" not found in our list. Try London, Delhi, or Tokyo.`);
-      setWeatherData(null);
+    if (!coords) {
+      setError(`City "${city}" not found in our list. Try London, Delhi, or Tokyo.`);
+      setWeather(null);
       return;
     }
 
-    setIsLoading(true);
-    setErrorMessage(null);
+    setLoading(true);
+    setError(null);
 
     try {
-      const weatherResponse = await fetchWeatherByCoords(
-        cityCoordinates.lat, 
-        cityCoordinates.lon
-      );
-      const formattedCityName = cityName.charAt(0).toUpperCase() + cityName.slice(1);
-      setWeatherData({
-        ...weatherResponse,
-        city: formattedCityName,
+      const data = await fetchWeatherByCoords(coords.lat, coords.lon);
+      setWeather({
+        ...data,
+        city: city.charAt(0).toUpperCase() + city.slice(1),
       });
-    } catch (error) {
-      setErrorMessage(error.message || "Failed to fetch weather data.");
-      setWeatherData(null);
+    } catch (err) {
+      setError(err.message || "Failed to fetch weather data.");
+      setWeather(null);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -47,22 +43,22 @@ function WeatherAppContent() {
     <div className="app-container" data-theme={theme}>
       <div className="app-wrapper">
         <Header />
-        <ThemeToggleButton />
+        <AppContext />
 
         <main className="main-content">
-          <SearchForm onSearch={handleCitySearch} />
+          <SearchForm onSearch={handleSearch} />
 
-          {isLoading && (
+          {loading && (
             <p className="loading-text">Searching the skies...</p>
           )}
 
-          {errorMessage && (
+          {error && (
             <div className="error-message">
-              {errorMessage}
+              {error}
             </div>
           )}
 
-          {weatherData && !isLoading && <WeatherCard data={weatherData} />}
+          {weather && !loading && <WeatherCard data={weather} />}
         </main>
 
         <footer className="footer">
@@ -76,7 +72,7 @@ function WeatherAppContent() {
 function App() {
   return (
     <ThemeProvider>
-      <WeatherAppContent />
+      <AppContent />
     </ThemeProvider>
   );
 }
