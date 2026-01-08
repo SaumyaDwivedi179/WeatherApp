@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
-import SearchForm from '../components/SearchForm.jsx'
+import { SearchForm } from '../components/SearchForm.jsx'
 
 describe('SearchForm', () => {
   it('renders input and calls onSearch', () => {

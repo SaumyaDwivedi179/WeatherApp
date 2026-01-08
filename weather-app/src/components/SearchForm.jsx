@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
-export default function SearchForm({ onSearch }) {
+export function SearchForm({ onSearch }) {
   const [city, setCity] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (!city.trim()) return
     
     setLoading(true)
@@ -33,7 +33,7 @@ export default function SearchForm({ onSearch }) {
       <div style={{position: 'relative'}}>
         <input
           value={city}
-          onChange={(e) => setCity(e.target.value)}
+          onChange={(event) => setCity(event.target.value)}
           placeholder="Enter city name (Delhi, London...)"
           disabled={loading}
           style={{
@@ -60,7 +60,7 @@ export default function SearchForm({ onSearch }) {
       </div>
       <button
         type="submit"
-        disabled={!city.trim() || loading}
+        disabled={!city.trim() ?? loading}
         style={{
           width: '100%',
           padding: '16px',
