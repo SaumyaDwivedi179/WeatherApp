@@ -8,7 +8,7 @@ vi.mock('../services/weatherApi', async () => {
   const actual = await vi.importActual('../services/weatherApi');
   return {
     ...actual,
-    fetchWeatherByCoords: vi.fn(),
+    fetchWeatherInfoByCoordinates: vi.fn(),
   };
 });
 
@@ -22,7 +22,7 @@ describe('App Integration Test', () => {
       condition: 'Clear Sky'
     };
     
-    weatherApi.fetchWeatherByCoords.mockResolvedValue(mockWeatherData);
+    weatherApi.fetchWeatherInfoByCoordinates.mockResolvedValue(mockWeatherData);
 
     render(<App />);
 
