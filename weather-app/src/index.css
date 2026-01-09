@@ -9,3 +9,10 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* Header Component */
+.header-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid
+}
