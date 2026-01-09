@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import App from '../App.jsx'  // ← Fixed: Add .jsx extension
-import * as weatherApi from '../services/weatherApi.js'  // ← Add .js extension
+import App from '../App.jsx'  
+import * as weatherApi from '../services/weatherApi.js'  
 
-vi.mock('../services/weatherApi.js', async () => {  // ← Fixed path
+vi.mock('../services/weatherApi.js', async () => {  
   const actual = await vi.importActual('../services/weatherApi.js')
   return {
     ...actual,
@@ -50,7 +50,7 @@ describe('App Integration Test', () => {
     fireEvent.change(input, { target: { value: 'Mars' } })
     fireEvent.click(screen.getByRole('button', { name: /get weather/i }))
 
-    // Fixed: Match EXACT error text from App.jsx
+    
     await waitFor(() => {
       expect(screen.getByText(/City "Mars" not found\. Try London, Delhi, or Tokyo\./i)).toBeInTheDocument()
     })
