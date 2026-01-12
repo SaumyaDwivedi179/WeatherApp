@@ -50,7 +50,7 @@ describe('App Integration Test', () => {
     fireEvent.change(input, { target: { value: 'Mars' } })
     fireEvent.click(screen.getByRole('button', { name: /get weather/i }))
 
-    
+    // Fixed: Match EXACT error text from App.jsx
     await waitFor(() => {
       expect(screen.getByText(/City "Mars" not found\. Try London, Delhi, or Tokyo\./i)).toBeInTheDocument()
     })
