@@ -18,7 +18,7 @@ export function useWeather(cityName) {
       const coordinates = CITY_COORDS[cityName.toLowerCase().trim()];
 
       if (!coordinates) {
-        setErrorMessage(`City "${cityName}" not found.`);
+        setErrorMessage(`City "${cityName}" not found. Try London, Delhi, or Tokyo.`);
         setCurrentWeather(null);
         return;
       }
