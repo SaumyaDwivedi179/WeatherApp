@@ -31,7 +31,7 @@ describe('App Integration Test', () => {
     const input = screen.getByPlaceholderText(/enter city name/i)
     
     fireEvent.change(input, { target: { value: 'london' } })
-    fireEvent.click(screen.getByRole('button', { name: /get weather/i }))  // Button OK
+    fireEvent.click(screen.getByRole('button', { name: /get weather/i }))  
 
     await waitFor(() => {
       expect(screen.getByText('22°C')).toBeInTheDocument()
