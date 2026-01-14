@@ -1,3 +1,4 @@
+// src/App.jsx
 import { useState } from 'react'
 import Header from './components/Header.jsx'
 import { SearchForm } from './components/SearchForm.jsx'
@@ -10,6 +11,7 @@ function App() {
   const [weatherReports, setWeatherReports] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [theme, setTheme] = useState('dark')
 
   const handleSearch = async (cityNameInput) => {
     const cityName = cityNameInput.toLowerCase().trim()
@@ -31,7 +33,6 @@ function App() {
         ...weatherData,
         city: cityNameInput.charAt(0).toUpperCase() + cityNameInput.slice(1)
       }
-
       setCurrentWeather(formattedWeather)
       setWeatherReports(formattedWeather)
     } catch (fetchError) {
@@ -43,22 +44,23 @@ function App() {
     }
   }
 
+  const handleThemeToggle = () => {
+    setTheme((previousTheme) => (previousTheme === 'dark' ? 'light' : 'dark'))
+  }
+
   return (
-    <div className={styles.appContainer}>
+    <div className={`${styles.appContainer} ${styles[theme]}`}>
       <div className={styles.mainWrapper}>
-        <Header />
-
+        <Header theme={theme} onThemeToggle={handleThemeToggle} />
         <main className={styles.mainSection}>
-          <SearchForm onSearch={handleSearch} />
-
+          <SearchForm onSearch={handleSearch} theme={theme} />
           {isLoading && <p className={styles.statusText}>Searching the skies...</p>}
-
           {errorMessage && <div className={styles.errorBox}>{errorMessage}</div>}
-
-          {currentWeather && !isLoading && <WeatherCard data={currentWeather} />}
+          {currentWeather && !isLoading && <WeatherCard data={currentWeather} theme={theme} />}
         </main>
-
-        <footer className={styles.footer}>Powered by Open-Meteo API</footer>
+        <footer className={`${styles.footer} ${styles[theme]}`}>
+          Powered by Open-Meteo API
+        </footer>
       </div>
     </div>
   )
