@@ -3,25 +3,25 @@ import axios from 'axios'
 
 const API_BASE = 'https://api.open-meteo.com/v1/forecast'
 
-export const fetchWeatherByCoords = async (lat, lon) => {
+export const fetchWeatherInfoByCoordinates = async (latitude, longitude) => {
   
   
-  if (lat == null || lon == null) {
+  if (latitude === null || longitude === null) {
     throw new Error('Latitude and longitude required')
   }
 
   try {
     const { data } = await axios.get(API_BASE, {
       params: {
-        latitude: lat,
-        longitude: lon,
+        latitude: latitude,
+        longitude: longitude,
         current: 'temperature_2m,relative_humidity_2m,apparent_temperature',
         timezone: 'auto',
         forecast_days: 1
       }
     })
 
-    const current = data.current
+    const { current } = data
 
     return {
       city: 'Demo City', 

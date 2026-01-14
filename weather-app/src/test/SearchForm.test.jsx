@@ -1,9 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
-import SearchForm from '../components/SearchForm.jsx'
+import { vi } from 'vitest'
+import { SearchForm } from '../components/SearchForm.jsx'  // ← NAMED IMPORT
 
 describe('SearchForm', () => {
-  it('renders input and calls onSearch', () => {
+  it('renders input and calls onSearch', async () => {
     const mockSearch = vi.fn()
     render(<SearchForm onSearch={mockSearch} />)
     
@@ -11,6 +12,8 @@ describe('SearchForm', () => {
     fireEvent.change(input, { target: { value: 'Delhi' } })
     fireEvent.submit(input.closest('form'))
     
-    expect(mockSearch).toHaveBeenCalledWith('Delhi')
+    await waitFor(() => {
+      expect(mockSearch).toHaveBeenCalledWith('Delhi')
+    })
   })
 })
