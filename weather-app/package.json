@@ -6,5 +6,18 @@
     "test:ui": "vitest --ui",
     "api": "json-server --watch db.json --port 3001",
     "start": "concurrently \"npm run api\" \"npm run dev\""
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "concurrently": "^9.2.1",
+    "jsdom": "^27.4.0",
+    "json-server": "^1.0.0-beta.3",
+    "vitest": "^4.0.16"
+  },
+  "dependencies": {
+    "axios": "^1.13.2"
   }
 }
