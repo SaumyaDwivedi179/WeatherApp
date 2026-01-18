@@ -2,49 +2,38 @@
   box-sizing: border-box;
 }
 
-
 :root,
 [data-theme="light"] {
-  
   --theme-background-primary: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
   --theme-background-secondary: rgba(255, 255, 255, 0.8);
-  
-  /* Light Theme - Text Colors  */
+
   --theme-text-primary: #0f172a;
   --theme-text-secondary: #3b3d41;
-  
-  /* Light Theme - Border & Shadow  */
+
   --theme-border-color: rgba(15, 23, 42, 0.1);
   --theme-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
-  
-  /* Light Theme - Button Colors  */
+
   --theme-button-background: #0f172a;
   --theme-button-text: #bb9999;
-  
-  /* Light Theme - Error Colors (used by errorMessage in App.jsx) */
+
   --theme-error-background: rgba(239, 68, 68, 0.1);
   --theme-error-border: #ef4444;
   --theme-error-text: #dc2626;
 }
 
 [data-theme="dark"] {
-  /* Dark Theme - Background Colors  */
   --theme-background-primary: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
   --theme-background-secondary: rgba(255, 255, 255, 0.05);
-  
-  /* Dark Theme - Text Colors */
+
   --theme-text-primary: #ffffff;
   --theme-text-secondary: #cbd5e1;
-  
-  /* Dark Theme - Border & Shadow  */
+
   --theme-border-color: rgba(255, 255, 255, 0.1);
   --theme-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
-  
-  /* Dark Theme - Button Colors  */
+
   --theme-button-background: rgba(255, 255, 255, 0.1);
   --theme-button-text: #ffffff;
-  
-  /* Dark Theme - Error Colors*/
+
   --theme-error-background: rgba(239, 68, 68, 0.2);
   --theme-error-border: #ef4444;
   --theme-error-text: #fca5a5;
@@ -60,23 +49,19 @@ body {
   min-height: 100vh;
 }
 
-
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  font-family: sans-serif;
 }
-
 
 .app-wrapper {
   width: 100%;
   max-width: 500px;
   position: relative;
 }
-
 
 .main-content {
   background: var(--theme-background-secondary);
@@ -88,7 +73,6 @@ body {
   margin-top: 80px;
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 
 .loading-text {
   text-align: center;
@@ -114,5 +98,20 @@ body {
   color: var(--theme-text-secondary);
 }
 
+/* Button Styling */
+.theme-toggle-button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  background-color: var(--theme-button-background);
+  color: var(--theme-button-text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
 
-
+.theme-toggle-button:hover {
+  transform: scale(1.05);
+}

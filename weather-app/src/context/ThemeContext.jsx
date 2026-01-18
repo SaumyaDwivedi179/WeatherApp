@@ -1,11 +1,10 @@
+import { THEME } from '../constants/theme';
 import { createContext, useContext, useState } from "react";
 
 const ThemeContext = createContext();
 
 const THEME_STORAGE_KEY = "theme";
-const THEME_LIGHT = "light";
-const THEME_DARK = "dark";
-const DEFAULT_THEME = THEME_LIGHT;
+const DEFAULT_THEME = THEME.LIGHT; //enum
 
 export const ThemeProvider = ({ children }) => {
   const [currentTheme, setCurrentTheme] = useState(() => {
@@ -16,7 +15,7 @@ export const ThemeProvider = ({ children }) => {
 
   const toggleTheme = () => {
     setCurrentTheme((previousTheme) => {
-      const nextTheme = previousTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT;
+      const nextTheme = previousTheme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT;
       localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
       document.documentElement.setAttribute("data-theme", nextTheme);
       return nextTheme;
