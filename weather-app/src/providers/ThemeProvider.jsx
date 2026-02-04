@@ -8,8 +8,9 @@ export function ThemeProvider({ children }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    document.documentElement.className = theme
-  }, [theme])
+  document.documentElement.classList.toggle('dark', theme === 'dark')
+  document.documentElement.classList.toggle('light', theme === 'light')
+}, [theme])
 
   return children
 }

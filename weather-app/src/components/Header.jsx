@@ -10,7 +10,7 @@ const Header = () => (
           Get instant weather updates for any city worldwide
         </p>
       </div>
-      <ThemeToggle />  {}
+      <ThemeToggle /> 
     </div>
   </header>
 )
